@@ -1,5 +1,4 @@
 # Настройки для сервера Apache. На другом сервере этот файл ни на что не влияет.
-ErrorDocument 404 /404.html
 Options -Indexes
 RewriteEngine On
 # Единый адрес сайта: https и без www (важно для SEO)
