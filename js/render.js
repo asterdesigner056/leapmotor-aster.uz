@@ -400,6 +400,13 @@
 
   function pageId(page) { return page.kind === 'model' ? 'model:' + page.id : page.kind; }
 
+  /* Тег Google Tag Manager. Если меняете текст внутреннего скрипта, обновите его хэш в .htaccess */
+  function gtmTag(cfg) {
+    if (!cfg.gtmId) return '';
+    return '<script async src="https://www.googletagmanager.com/gtm.js?id=' + esc(cfg.gtmId) + '"></script>\n' +
+      '<script>\nwindow.dataLayer = window.dataLayer || [];\nfunction gtag(){dataLayer.push(arguments);}\ngtag(\'js\', new Date());\n</script>\n';
+  }
+
   /* Готовый HTML-документ (используется в tools/build.js) */
   function documentHtml(cfg, i18n, lang, page, buildVersion) {
     var t = i18n[lang];
@@ -413,7 +420,7 @@
       '<link rel="preload" href="' + rootPath + 'assets/img/models/' + heroId + '/hero.webp" as="image" fetchpriority="high">\n' : '';
     return '<!doctype html>\n' +
       '<!-- ЭТОТ ФАЙЛ СОЗДАН АВТОМАТИЧЕСКИ. Цены: js/config.js, тексты: js/i18n.js, структура: js/render.js. Затем: node tools/build.js -->\n' +
-      '<html lang="' + lang + '" data-page="' + pageId(page) + '" data-hash="' + hash(cfg, i18n) + '">\n<head>\n' +
+      '<html lang="' + lang + '" data-page="' + pageId(page) + '" data-hash="' + hash(cfg, i18n) + '">\n<head>\n' + gtmTag(cfg) +
       '<meta charset="utf-8">\n<meta name="viewport" content="width=device-width, initial-scale=1">\n' +
       '<title>' + esc(s.title) + '</title>\n<meta name="description" content="' + esc(s.desc) + '">\n' +
       '<meta name="robots" content="index, follow, max-image-preview:large">\n<meta name="theme-color" content="#000000">\n' +

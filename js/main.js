@@ -203,21 +203,21 @@
   /* ---------- ГАЛЕРЕЯ В ОДИН РЯД: КНОПКИ ПРОКРУТКИ ---------- */
   var rail = $('[data-rail]');
   if (rail) {
-    var track = $('[data-rail-track]', rail);
+    var railTrack = $('[data-rail-track]', rail);
     var railPrev = $('[data-rail-prev]', rail);
     var railNext = $('[data-rail-next]', rail);
     var railSync = function () {
-      var max = track.scrollWidth - track.clientWidth;
-      railPrev.disabled = track.scrollLeft <= 2;
-      railNext.disabled = track.scrollLeft >= max - 2;
+      var max = railTrack.scrollWidth - railTrack.clientWidth;
+      railPrev.disabled = railTrack.scrollLeft <= 2;
+      railNext.disabled = railTrack.scrollLeft >= max - 2;
     };
     var railMove = function (dir) {
-      var step = track.clientWidth * 0.8;
-      track.scrollBy({ left: dir * step, behavior: reduceMotion ? 'auto' : 'smooth' });
+      var step = railTrack.clientWidth * 0.8;
+      railTrack.scrollBy({ left: dir * step, behavior: reduceMotion ? 'auto' : 'smooth' });
     };
     railPrev.addEventListener('click', function () { railMove(-1); });
     railNext.addEventListener('click', function () { railMove(1); });
-    track.addEventListener('scroll', railSync, { passive: true });
+    railTrack.addEventListener('scroll', railSync, { passive: true });
     window.addEventListener('resize', railSync);
     railSync();
   }
@@ -262,6 +262,12 @@
     touchX = null;
     if (Math.abs(dx) > 50) lbStep(dx < 0 ? 1 : -1);
   }, { passive: true });
+
+  /* События для Google Tag Manager. Имя и телефон клиента сюда не передаются */
+  function track(name, params) {
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push(Object.assign({ event: name }, params || {}));
+  }
 
   /* ---------- ФОРМЫ ---------- */
   var dlg = $('[data-book-dialog]');
@@ -451,7 +457,10 @@
       button.disabled = true;
       button.textContent = t.fSending;
 
-      sendLead(buildPayload(form)).then(function () {
+      var lead = buildPayload(form);
+      var leadInfo = { lead_model: lead.model, lead_city: lead.city, lead_language: lead.language, lead_type: form.getAttribute('data-intent') };
+
+      sendLead(lead).then(function () {
         var keepModel = form.closest('[data-book-dialog]') ? '' : form.elements.model.value;
         form.reset();
         form.elements.phone.dataset.digits = '';
@@ -462,9 +471,7 @@
         ok.hidden = false;
         ok.focus({ preventScroll: true });
         ok.scrollIntoView({ block: 'nearest' });
-        /* Событие для счётчиков аналитики, если вы их подключите */
-        window.dataLayer = window.dataLayer || [];
-        window.dataLayer.push({ event: 'lead_submit' });
+        track('lead_submit', leadInfo);
       }).catch(function () {
         /* Введённые данные остаются в форме, можно повторить */
         failBox.hidden = false;
@@ -499,6 +506,7 @@
       if (radio) radio.checked = true;
     }
     openDialog(dlg);
+    track('book_open', { lead_model: model ? modelById(model).name : '', lead_type: LABELS[intent] || 'consult' });
     form.elements.fio.focus();
   }
 

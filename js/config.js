@@ -19,6 +19,11 @@
     // Дата актуальности цен. Показывается под прайсом.
     pricesDate: '04.11.2026',
 
+    /* ---------- GOOGLE TAG MANAGER ----------
+       Номер контейнера. Тег ставится сразу после <head> на всех страницах при node tools/build.js.
+       Пустая строка отключает тег. */
+    gtmId: 'GTM-WLQV9JXN',
+
     /* ---------- ЗАЯВКИ (CRM OKTELL) ---------- */
     lead: {
       url: 'https://oktell.aster.uz:8443/aster/website-lead',
