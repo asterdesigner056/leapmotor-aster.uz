@@ -11,10 +11,10 @@
   root.SITE_I18N = {
     ru: {
       // --- Страницы: заголовки и описания для поиска. {m} модель, {p} цена, {tag} слоган ---
-      titleModel: 'Leapmotor {m}: цена и комплектации в Самарканде и Карши | ASTER',
-      descModel: 'Leapmotor {m} у официального дилера ASTER в Самарканде и Карши. Цена от {p} сум, комплектации, характеристики, фото и онлайн-бронь.',
-      titleContacts: 'Контакты Leapmotor ASTER: адреса в Самарканде и Карши',
-      descContacts: 'Адреса салонов Leapmotor ASTER в Самарканде и Карши, ссылки на карты, Telegram и Instagram. Ответы на частые вопросы и заявка онлайн.',
+      titleModel: 'Leapmotor {m} | ASTER',
+      descModel: 'Leapmotor {m} от {p} сум. Официальный дилер ASTER.',
+      titleContacts: 'Контакты | Leapmotor ASTER',
+      descContacts: 'Адреса Leapmotor ASTER в Самарканде и Карши.',
       // --- Новые блоки ---
       heroH1: 'Официальный дилер Leapmotor в Самарканде и Карши',
       navContacts: 'Контакты', navHome: 'Главная', crumbs: 'Навигация по сайту',
@@ -26,8 +26,8 @@
       contactsTitle: 'Контакты', contactsText: 'Два салона ASTER: приезжайте посмотреть автомобиль или напишите филиалу.',
       pricesNoteShort: 'Точную цену подтвердит менеджер. Цены актуальны на',
       // --- SEO: заголовок вкладки и описание в поиске ---
-      metaTitle: 'Leapmotor в Самарканде и Карши: цены и комплектации | ASTER',
-      metaDescription: 'Официальный дилер Leapmotor ASTER в Самарканде и Карши. A10, B10, C01, C10, C11, C16 и D19: цены, комплектации, бронь автомобиля онлайн.',
+      metaTitle: 'Leapmotor-aster.uz',
+      metaDescription: 'Официальный дилер Leapmotor ASTER',
       ogLocale: 'ru_RU',
       skip: 'Перейти к содержимому',
       // --- Меню ---
@@ -95,10 +95,10 @@
     },
 
     uz: {
-      titleModel: 'Leapmotor {m}: Samarqand va Qarshida narx va komplektatsiyalar | ASTER',
-      descModel: 'ASTER rasmiy dilerida Leapmotor {m}, Samarqand va Qarshi. Narxi {p} soʻmdan, komplektatsiyalar, xususiyatlar, rasmlar va onlayn bron.',
-      titleContacts: 'Leapmotor ASTER aloqa: Samarqand va Qarshidagi manzillar',
-      descContacts: 'Samarqand va Qarshidagi Leapmotor ASTER salonlari manzillari, xaritalar, Telegram va Instagram. Koʻp beriladigan savollar va onlayn soʻrov.',
+      titleModel: 'Leapmotor {m} | ASTER',
+      descModel: 'Leapmotor {m}, narxi {p} soʻmdan. ASTER rasmiy dileri.',
+      titleContacts: 'Aloqa | Leapmotor ASTER',
+      descContacts: 'Samarqand va Qarshidagi Leapmotor ASTER manzillari.',
       heroH1: 'Samarqand va Qarshidagi Leapmotor rasmiy dileri',
       navContacts: 'Aloqa', navHome: 'Bosh sahifa', crumbs: 'Sayt boʻyicha navigatsiya',
       more: 'Batafsil', pause: 'Koʻrsatuvni toʻxtatish', play: 'Koʻrsatuvni davom ettirish',
@@ -108,8 +108,8 @@
       nextModel: 'Keyingi model', requestModel: 'Leapmotor {m} uchun soʻrov',
       contactsTitle: 'Aloqa', contactsText: 'ASTERning ikki saloni: avtomobilni koʻrgani keling yoki filialga yozing.',
       pricesNoteShort: 'Aniq narxni menejer tasdiqlaydi. Narxlar dolzarb sanasi:',
-      metaTitle: 'Leapmotor Samarqand va Qarshida: narxlar va komplektatsiyalar | ASTER',
-      metaDescription: 'Samarqand va Qarshidagi Leapmotor ASTER rasmiy dileri. A10, B10, C01, C10, C11, C16 va D19: narxlar, komplektatsiyalar, onlayn bron.',
+      metaTitle: 'Leapmotor-aster.uz',
+      metaDescription: 'Leapmotor ASTER rasmiy dileri',
       ogLocale: 'uz_UZ',
       skip: 'Asosiy qismga oʻtish',
       navModels: 'Modellar', navFacts: 'Xususiyatlar', navBranches: 'Filiallar', navFaq: 'Savollar',

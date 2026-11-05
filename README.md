@@ -2,11 +2,9 @@
 
 Чистые HTML, CSS и JS. Страницы: главная, 7 моделей (`/models/c10/`), контакты (`/contacts/`). Узбекская версия лежит в `/uz/` с теми же адресами.
 
-## Первый запуск
-1. Откройте папку в VS Code и скачайте фото и шрифты:
-   дважды нажмите на файл `download-photos.cmd` или выполните `powershell -ExecutionPolicy Bypass -File tools\download-assets.ps1`
-   Если установлен Node 18+, можно так: `node tools/download-assets.js`
-2. Откройте `index.html` через расширение Live Server.
+## Запуск
+Откройте папку в VS Code и запустите `index.html` через расширение Live Server.
+Фото и шрифты уже лежат в `assets/`. Скрипт `download-photos.cmd` нужен, только если их надо скачать заново с leapmotor.uz.
 
 ## Что где менять
 | Что | Файл |
