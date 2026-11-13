@@ -36,6 +36,13 @@
     });
   }
 
+  /* Запоминаем язык, который посетитель выбрал сам (его читает js/boot.js) */
+  $$('.lang a').forEach(function (a) {
+    a.addEventListener('click', function () {
+      try { localStorage.setItem('site_lang', a.getAttribute('hreflang')); } catch (e) { /* хранилище недоступно */ }
+    });
+  });
+
   /* ---------- ЗАГЛУШКА ДЛЯ ФОТО, КОТОРЫХ ЕЩЁ НЕТ В ПАПКЕ ---------- */
   function fixImage(img) {
     if (img.getAttribute('src') === PLACEHOLDER || !img.getAttribute('src')) return;
@@ -143,7 +150,8 @@
         copy[0].textContent = m.name;
         copy[1].textContent = m.tagline[lang].join(' ');
         copy[2].textContent = R.priceText(R.minPrice(m), t, true);
-        $('[data-s-link]', show).setAttribute('href', (location.protocol === 'file:' ? (rootPath + (lang === 'uz' ? 'uz/' : '') + 'models/' + id + '/index.html') : (rootPath + (lang === 'uz' ? 'uz/' : '') + 'models/' + id + '/')));
+        var href = R.linkFn(lang, page)({ kind: 'model', id: id });
+        $('[data-s-link]', show).setAttribute('href', location.protocol === 'file:' ? href + 'index.html' : href);
       };
       img.addEventListener('load', apply, { once: true });
       img.addEventListener('error', function () { img.src = PLACEHOLDER; }, { once: true });
@@ -201,24 +209,65 @@
   }
 
   /* ---------- ГАЛЕРЕЯ В ОДИН РЯД: КНОПКИ ПРОКРУТКИ ---------- */
+  /* Листается пальцем, мышью (перетаскиванием) и кнопками под фото */
   var rail = $('[data-rail]');
   if (rail) {
     var railTrack = $('[data-rail-track]', rail);
     var railPrev = $('[data-rail-prev]', rail);
     var railNext = $('[data-rail-next]', rail);
+    var railFill = $('[data-rail-fill]', rail);
+    var railCount = $('[data-rail-count]', rail);
+    var railItems = $$('li', railTrack);
     var railSync = function () {
       var max = railTrack.scrollWidth - railTrack.clientWidth;
-      railPrev.disabled = railTrack.scrollLeft <= 2;
-      railNext.disabled = railTrack.scrollLeft >= max - 2;
+      var x = railTrack.scrollLeft;
+      railPrev.disabled = x <= 2;
+      railNext.disabled = x >= max - 2;
+      railFill.style.width = (max > 0 ? Math.max(railTrack.clientWidth / railTrack.scrollWidth, 0) * 100 + (x / max) * (100 - railTrack.clientWidth / railTrack.scrollWidth * 100) : 100) + '%';
+      /* Номер фото, которое сейчас ближе всего к левому краю */
+      var left = railTrack.getBoundingClientRect().left + parseFloat(getComputedStyle(railTrack).paddingLeft);
+      var current = 1;
+      railItems.forEach(function (li, i) { if (li.getBoundingClientRect().left - left < li.offsetWidth / 2) current = i + 1; });
+      if (x >= max - 2) current = railItems.length;
+      railCount.textContent = current + ' / ' + railItems.length;
     };
     var railMove = function (dir) {
-      var step = railTrack.clientWidth * 0.8;
+      var step = railItems[0].offsetWidth + 12;
       railTrack.scrollBy({ left: dir * step, behavior: reduceMotion ? 'auto' : 'smooth' });
     };
     railPrev.addEventListener('click', function () { railMove(-1); });
     railNext.addEventListener('click', function () { railMove(1); });
+    railTrack.addEventListener('keydown', function (e) {
+      if (e.key === 'ArrowLeft') { e.preventDefault(); railMove(-1); }
+      if (e.key === 'ArrowRight') { e.preventDefault(); railMove(1); }
+    });
     railTrack.addEventListener('scroll', railSync, { passive: true });
     window.addEventListener('resize', railSync);
+
+    /* Перетаскивание мышью. На телефоне работает обычный свайп пальцем */
+    var drag = null;
+    var dragMoved = false;
+    railTrack.addEventListener('pointerdown', function (e) {
+      if (e.pointerType !== 'mouse' || e.button !== 0) return;
+      drag = { x: e.clientX, left: railTrack.scrollLeft };
+      dragMoved = false;
+    });
+    window.addEventListener('pointermove', function (e) {
+      if (!drag) return;
+      var dx = e.clientX - drag.x;
+      if (!dragMoved && Math.abs(dx) > 6) { dragMoved = true; railTrack.classList.add('is-dragging'); }
+      if (dragMoved) railTrack.scrollLeft = drag.left - dx;
+    });
+    window.addEventListener('pointerup', function () {
+      if (!drag) return;
+      drag = null;
+      railTrack.classList.remove('is-dragging');
+    });
+    /* После перетаскивания клик не открывает фото на весь экран */
+    railTrack.addEventListener('click', function (e) {
+      if (dragMoved) { e.preventDefault(); e.stopPropagation(); dragMoved = false; }
+    }, true);
+    railTrack.addEventListener('dragstart', function (e) { e.preventDefault(); });
     railSync();
   }
 

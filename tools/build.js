@@ -24,7 +24,7 @@ const pages = [{ kind: 'home', dir: '' }, { kind: 'contacts', dir: 'contacts' }]
 const version = render.hash(cfg, i18n) + Date.now().toString(36);
 for (const lang of ['ru', 'uz']) {
   for (const page of pages) {
-    const dir = path.join(ROOT, lang === 'uz' ? 'uz' : '', page.dir);
+    const dir = path.join(ROOT, lang === 'ru' ? 'ru' : '', page.dir);
     fs.mkdirSync(dir, { recursive: true });
     fs.writeFileSync(path.join(dir, 'index.html'), render.documentHtml(cfg, i18n, lang, page, version));
   }
@@ -33,9 +33,9 @@ for (const lang of ['ru', 'uz']) {
 const today = new Date().toISOString().slice(0, 10);
 const urls = pages.map((p) => {
   const tail = p.dir ? p.dir + '/' : '';
-  const ru = `${cfg.siteUrl}/${tail}`;
-  const uz = `${cfg.siteUrl}/uz/${tail}`;
-  const alt = `<xhtml:link rel="alternate" hreflang="ru" href="${ru}"/><xhtml:link rel="alternate" hreflang="uz" href="${uz}"/><xhtml:link rel="alternate" hreflang="x-default" href="${ru}"/>`;
+  const uz = `${cfg.siteUrl}/${tail}`;
+  const ru = `${cfg.siteUrl}/ru/${tail}`;
+  const alt = `<xhtml:link rel="alternate" hreflang="ru" href="${ru}"/><xhtml:link rel="alternate" hreflang="uz" href="${uz}"/><xhtml:link rel="alternate" hreflang="x-default" href="${uz}"/>`;
   return `  <url><loc>${ru}</loc><lastmod>${today}</lastmod>${alt}</url>\n  <url><loc>${uz}</loc><lastmod>${today}</lastmod>${alt}</url>`;
 }).join('\n');
 fs.writeFileSync(path.join(ROOT, 'sitemap.xml'),

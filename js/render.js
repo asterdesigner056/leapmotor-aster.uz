@@ -44,17 +44,17 @@
     return '';
   }
   function rootFor(lang, page) {
-    var depth = (lang === 'uz' ? 1 : 0) + (page.kind === 'model' ? 2 : (page.kind === 'home' ? 0 : 1));
+    var depth = (lang === 'ru' ? 1 : 0) + (page.kind === 'model' ? 2 : (page.kind === 'home' ? 0 : 1));
     return new Array(depth + 1).join('../');
   }
   function linkFn(lang, page) {
     var r = rootFor(lang, page);
     return function (target, targetLang) {
       var l = targetLang || lang;
-      return (r + (l === 'uz' ? 'uz/' : '') + pagePath(target)) || './';
+      return (r + (l === 'ru' ? 'ru/' : '') + pagePath(target)) || './';
     };
   }
-  function absUrl(cfg, lang, page) { return cfg.siteUrl + '/' + (lang === 'uz' ? 'uz/' : '') + pagePath(page); }
+  function absUrl(cfg, lang, page) { return cfg.siteUrl + '/' + (lang === 'ru' ? 'ru/' : '') + pagePath(page); }
 
   function hexMark() {
     return '<svg class="hexmark" viewBox="0 0 156 182" aria-hidden="true" focusable="false"><path d="M48.6 120.4v41c0 1.2-1 2-2 2-.4 0-.7-.1-1-.3L2 137.5a4 4 0 0 1-2-3.5V47.4a4 4 0 0 1 2-3.5l24.1-14.2c.4-.2.7-.3 1-.3 1.1 0 2 .9 2 2.1v75.2c0 .7.4 1.4 1 1.8l17.5 10.2c.6.4 1 1.1 1 1.8Z"/><path d="M155.5 47.4V134a4 4 0 0 1-2 3.5l-43.6 25.6c-1.3.8-3-.2-3-1.8v-40.9c0-.7.4-1.4 1-1.8l17.4-10.2c.6-.4 1-1 1-1.8V63.3c0-.7-.4-1.4-1-1.8L95.3 43.9c-1.3-.8-3 .2-3 1.8v127.8l-12.6 7.3c-.5.3-1 .5-1.5.6h-1c-.5-.1-1-.3-1.5-.6l-12.6-7.3V7.9L75.7.5c.6-.3 1.3-.5 2-.5s1.4.2 2 .5l73.7 43.3a4 4 0 0 1 2 3.6Z"/></svg>';
@@ -264,7 +264,6 @@
       '<section class="mhero" aria-labelledby="m-title">' +
         '<div class="mhero__stage"><img class="ph-' + esc(m.id) + '" src="' + esc(heroPath(rootPath, m.id)) + '" alt="' + esc('Leapmotor ' + m.name + ', ' + m.bodyType[lang]) + '" width="1920" height="1440" fetchpriority="high" decoding="async"></div>' +
         '<div class="mhero__top wrap">' +
-          '<nav aria-label="' + esc(t.crumbs) + '"><ol class="crumbs"><li><a href="' + go({ kind: 'home' }) + '">' + esc(t.navHome) + '</a></li><li aria-current="page">' + esc(m.name) + '</li></ol></nav>' +
           badge +
           '<h1 id="m-title"><span>Leapmotor</span> ' + esc(m.name) + '</h1>' +
           '<p class="mhero__tag"><strong>' + esc(m.tagline[lang][0]) + '</strong> ' + esc(m.tagline[lang][1]) + '</p>' +
@@ -285,7 +284,10 @@
         '<p class="note">' + esc(t.specNote) + '</p></div></section>' +
 
       '<section class="gallery" id="gallery" data-spy-target="gallery" aria-labelledby="gal-title"><div class="wrap"><h2 id="gal-title">' + esc(t.galleryTitle) + '</h2></div><div class="rail" data-rail><ul class="rail__track" data-rail-track tabindex="0" aria-label="' + esc(t.galleryOf + ' Leapmotor ' + m.name) + '">' + gallery + '</ul>' +
-        '<button class="rail__btn rail__btn--prev" type="button" data-rail-prev aria-label="' + esc(t.prev) + '">‹</button><button class="rail__btn rail__btn--next" type="button" data-rail-next aria-label="' + esc(t.next) + '">›</button></div></section>' +
+        '<div class="rail__bar wrap"><div class="rail__progress" aria-hidden="true"><i data-rail-fill></i></div>' +
+        '<span class="rail__count" data-rail-count aria-hidden="true">1 / ' + m.photos + '</span>' +
+        '<button class="rail__btn" type="button" data-rail-prev aria-label="' + esc(t.prev) + '"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M15 5l-7 7 7 7"/></svg></button>' +
+        '<button class="rail__btn" type="button" data-rail-next aria-label="' + esc(t.next) + '"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M9 5l7 7-7 7"/></svg></button></div></div></section>' +
 
       '<section class="trims-sec" id="trims" data-spy-target="trims" aria-labelledby="tr-title"><div class="wrap trims-sec__in">' +
         '<div class="trims-sec__list"><h2 id="tr-title">' + esc(t.trimsTitle) + '</h2><fieldset class="trims" data-buy-scope><legend class="sr">' + esc(t.trimLegend) + '</legend>' + trims + '</fieldset></div>' +
@@ -425,7 +427,7 @@
       '<title>' + esc(s.title) + '</title>\n<meta name="description" content="' + esc(s.desc) + '">\n' +
       '<meta name="robots" content="index, follow, max-image-preview:large">\n<meta name="theme-color" content="#000000">\n' +
       '<link rel="canonical" href="' + url + '">\n' +
-      '<link rel="alternate" hreflang="ru" href="' + ru + '">\n<link rel="alternate" hreflang="uz" href="' + uz + '">\n<link rel="alternate" hreflang="x-default" href="' + ru + '">\n' +
+      '<link rel="alternate" hreflang="ru" href="' + ru + '">\n<link rel="alternate" hreflang="uz" href="' + uz + '">\n<link rel="alternate" hreflang="x-default" href="' + uz + '">\n' +
       '<meta property="og:type" content="website">\n<meta property="og:site_name" content="' + esc(cfg.siteName) + '">\n<meta property="og:locale" content="' + t.ogLocale + '">\n' +
       '<meta property="og:title" content="' + esc(s.title) + '">\n<meta property="og:description" content="' + esc(s.desc) + '">\n<meta property="og:url" content="' + url + '">\n' +
       '<meta property="og:image" content="' + s.image + '">\n<meta name="twitter:card" content="summary_large_image">\n' +
@@ -440,6 +442,6 @@
 
   root.SITE_RENDER = {
     body: body, documentHtml: documentHtml, hash: hash, heroPath: heroPath, photoPath: photoPath,
-    rootFor: rootFor, priceText: priceText, minPrice: minPrice, esc: esc
+    rootFor: rootFor, linkFn: linkFn, priceText: priceText, minPrice: minPrice, esc: esc
   };
 })(typeof window !== 'undefined' ? window : globalThis);
