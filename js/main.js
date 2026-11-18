@@ -46,6 +46,7 @@
   /* ---------- ЗАГЛУШКА ДЛЯ ФОТО, КОТОРЫХ ЕЩЁ НЕТ В ПАПКЕ ---------- */
   function fixImage(img) {
     if (img.getAttribute('src') === PLACEHOLDER || !img.getAttribute('src')) return;
+    img.removeAttribute('srcset');
     img.setAttribute('src', PLACEHOLDER);
     img.classList.add('is-placeholder');
   }
@@ -154,7 +155,9 @@
         $('[data-s-link]', show).setAttribute('href', location.protocol === 'file:' ? href + 'index.html' : href);
       };
       img.addEventListener('load', apply, { once: true });
-      img.addEventListener('error', function () { img.src = PLACEHOLDER; }, { once: true });
+      img.addEventListener('error', function () { img.removeAttribute('srcset'); img.src = PLACEHOLDER; }, { once: true });
+      img.sizes = '100vw';
+      img.srcset = R.heroSrcset(rootPath, id);
       img.src = R.heroPath(rootPath, id);
     };
     var schedule = function () {

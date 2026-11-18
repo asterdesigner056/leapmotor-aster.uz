@@ -28,6 +28,9 @@
 
   /* Пути к файлам фото */
   function heroPath(rootPath, id) { return rootPath + 'assets/img/models/' + id + '/hero.webp'; }
+  /* Уменьшенная копия главного фото для телефонов (hero-960.webp создаёт tools/images.py) */
+  function heroSrcset(rootPath, id) { return rootPath + 'assets/img/models/' + id + '/hero-960.webp 960w, ' + heroPath(rootPath, id) + ' 1920w'; }
+  function heroImg(rootPath, id, sizes) { return 'srcset="' + esc(heroSrcset(rootPath, id)) + '" sizes="' + sizes + '" '; }
   function photoPath(rootPath, id, i) { return rootPath + 'assets/img/models/' + id + '/' + (i < 10 ? '0' : '') + i + '.webp'; }
 
   /* Хэш настроек: если config или i18n изменили без сборки, браузер пересоберёт страницу */
@@ -181,7 +184,7 @@
     /* Витрина: одинаковые карточки, последняя открывает заявку на консультацию */
     var tiles = cfg.models.map(function (m) {
       var href = go({ kind: 'model', id: m.id });
-      return '<li class="card" data-reveal><a class="card__img" href="' + href + '" tabindex="-1" aria-hidden="true"><img class="ph-' + esc(m.id) + '" src="' + esc(heroPath(rootPath, m.id)) + '" alt="" width="1920" height="1440" loading="lazy" decoding="async"></a>' +
+      return '<li class="card" data-reveal><a class="card__img" href="' + href + '" tabindex="-1" aria-hidden="true"><img class="ph-' + esc(m.id) + '" ' + heroImg(rootPath, m.id, '(min-width: 1000px) 25vw, (min-width: 640px) 50vw, 100vw') + 'src="' + esc(heroPath(rootPath, m.id)) + '" alt="" width="1920" height="1440" loading="lazy" decoding="async"></a>' +
         '<div class="card__body"><h3><a href="' + href + '">Leapmotor ' + esc(m.name) + '</a></h3><p class="card__type">' + esc(m.bodyType[lang]) + '</p>' +
         '<p class="card__price">' + esc(priceText(minPrice(m), t, true)) + '</p>' +
         '<div class="card__cta"><a class="btn btn--line btn--small" href="' + href + '" aria-label="' + esc(t.more + ': Leapmotor ' + m.name) + '">' + esc(t.more) + '</a>' +
@@ -195,7 +198,7 @@
 
     return '' +
       '<section class="show" aria-labelledby="show-title" data-show>' +
-        '<div class="show__stage" data-stage><img class="ph-' + esc(first.id) + '" src="' + esc(heroPath(rootPath, first.id)) + '" alt="' + esc('Leapmotor ' + first.name + ', ' + first.bodyType[lang]) + '" width="1920" height="1440" fetchpriority="high" decoding="async"></div>' +
+        '<div class="show__stage" data-stage><img class="ph-' + esc(first.id) + '" ' + heroImg(rootPath, first.id, '100vw') + 'src="' + esc(heroPath(rootPath, first.id)) + '" alt="' + esc('Leapmotor ' + first.name + ', ' + first.bodyType[lang]) + '" width="1920" height="1440" fetchpriority="high" decoding="async"></div>' +
         '<div class="show__top wrap">' +
           '<h1 id="show-title">' + esc(t.heroH1) + '</h1>' +
           '<p class="show__name" data-s-name>' + esc(first.name) + '</p>' +
@@ -210,7 +213,7 @@
         '</div>' +
       '</section>' +
 
-      '<section class="range" id="models" aria-labelledby="range-title"><div class="wrap"><h2 id="range-title">' + esc(t.rangeTitle) + '</h2><ul class="cards">' + tiles + '</ul></div></section>' +
+      '<section class="range" id="models" aria-labelledby="range-title"><div class="wrap"><h2 id="range-title">' + esc(t.rangeTitle) + '</h2><p class="lede">' + esc(t.rangeText) + '</p><ul class="cards">' + tiles + '</ul></div></section>' +
 
       '<section class="facts" aria-labelledby="facts-title"><div class="wrap"><h2 id="facts-title">' + esc(t.factsTitle) + '</h2><ul class="facts__list">' + facts + '</ul></div></section>' +
 
@@ -262,7 +265,7 @@
 
     return '' +
       '<section class="mhero" aria-labelledby="m-title">' +
-        '<div class="mhero__stage"><img class="ph-' + esc(m.id) + '" src="' + esc(heroPath(rootPath, m.id)) + '" alt="' + esc('Leapmotor ' + m.name + ', ' + m.bodyType[lang]) + '" width="1920" height="1440" fetchpriority="high" decoding="async"></div>' +
+        '<div class="mhero__stage"><img class="ph-' + esc(m.id) + '" ' + heroImg(rootPath, m.id, '100vw') + 'src="' + esc(heroPath(rootPath, m.id)) + '" alt="' + esc('Leapmotor ' + m.name + ', ' + m.bodyType[lang]) + '" width="1920" height="1440" fetchpriority="high" decoding="async"></div>' +
         '<div class="mhero__top wrap">' +
           badge +
           '<h1 id="m-title"><span>Leapmotor</span> ' + esc(m.name) + '</h1>' +
@@ -280,7 +283,7 @@
       '</ul></div></nav>' +
 
       '<section class="overview" id="overview" data-spy-target="overview" aria-labelledby="ov-title"><div class="wrap">' +
-        '<h2 id="ov-title">' + esc(t.specsTitle) + '</h2><dl class="kpis">' + specs + '</dl>' + features +
+        '<h2 id="ov-title">' + esc(t.specsTitle) + '</h2><p class="lede">' + esc(fill(t.modelIntro, { m: m.name, type: m.bodyType[lang], p: money(minPrice(m)), n: m.trims.length })) + '</p><dl class="kpis">' + specs + '</dl>' + features +
         '<p class="note">' + esc(t.specNote) + '</p></div></section>' +
 
       '<section class="gallery" id="gallery" data-spy-target="gallery" aria-labelledby="gal-title"><div class="wrap"><h2 id="gal-title">' + esc(t.galleryTitle) + '</h2></div><div class="rail" data-rail><ul class="rail__track" data-rail-track tabindex="0" aria-label="' + esc(t.galleryOf + ' Leapmotor ' + m.name) + '">' + gallery + '</ul>' +
@@ -300,7 +303,7 @@
 
       requestSection(cfg, t, lang, m.id, fill(t.requestModel, { m: m.name }), 'book') +
 
-      '<a class="next ph-link" href="' + go({ kind: 'model', id: next.id }) + '"><img class="ph-' + esc(next.id) + '" src="' + esc(heroPath(rootPath, next.id)) + '" alt="" width="1920" height="1440" loading="lazy" decoding="async">' +
+      '<a class="next ph-link" href="' + go({ kind: 'model', id: next.id }) + '"><img class="ph-' + esc(next.id) + '" ' + heroImg(rootPath, next.id, '100vw') + 'src="' + esc(heroPath(rootPath, next.id)) + '" alt="" width="1920" height="1440" loading="lazy" decoding="async">' +
         '<span class="next__txt wrap"><span>' + esc(t.nextModel) + '</span><strong>Leapmotor ' + esc(next.name) + '</strong></span></a>';
   }
 
@@ -340,7 +343,7 @@
     if (page.kind === 'model') {
       var m = cfg.models.filter(function (x) { return x.id === page.id; })[0];
       var map = { m: m.name, tag: m.tagline[lang].join(' '), p: money(minPrice(m)).replace(/ /g, ' ') };
-      return { title: fill(t.titleModel, map), desc: fill(t.descModel, map), image: cfg.siteUrl + '/assets/img/models/' + m.id + '/hero.webp' };
+      return { title: fill(t.titleModel, map), desc: fill(t.descModel, map), image: cfg.siteUrl + '/assets/img/models/' + m.id + '/og.jpg' };
     }
     var cover = cfg.siteUrl + '/assets/img/og-cover.jpg';
     if (page.kind === 'contacts') return { title: t.titleContacts, desc: t.descContacts, image: cover };
@@ -352,11 +355,16 @@
       var d = {
         '@type': 'AutoDealer', '@id': cfg.siteUrl + '/#' + b.id,
         name: 'Leapmotor ASTER ' + b.name[lang], url: contactsUrl + '#branch-' + b.id,
-        image: cfg.siteUrl + '/assets/img/og-cover.jpg', brand: { '@type': 'Brand', name: 'Leapmotor' },
+        image: cfg.siteUrl + '/assets/img/og-cover.jpg', logo: cfg.siteUrl + '/assets/img/icon-512.png',
+        brand: { '@type': 'Brand', name: 'Leapmotor' },
         address: { '@type': 'PostalAddress', streetAddress: b.street[lang], addressLocality: b.locality[lang], addressRegion: b.region[lang], addressCountry: 'UZ' },
-        hasMap: b.googleMaps, sameAs: [b.instagram, b.telegram], areaServed: b.name[lang]
+        hasMap: b.googleMaps, sameAs: [b.instagram, b.telegram, b.googleMaps, b.yandexMaps],
+        areaServed: [{ '@type': 'City', name: b.name[lang] }, { '@type': 'AdministrativeArea', name: b.region[lang] }],
+        parentOrganization: { '@type': 'Organization', name: cfg.siteName, url: cfg.siteUrl + '/' }
       };
+      if (b.lat && b.lng) d.geo = { '@type': 'GeoCoordinates', latitude: b.lat, longitude: b.lng };
       if (b.phone) d.telephone = b.phone;
+      if (b.hours) d.openingHours = b.hours;
       return d;
     });
   }
@@ -365,10 +373,11 @@
     var url = absUrl(cfg, lang, { kind: 'model', id: m.id });
     var car = {
       '@type': 'Car', name: 'Leapmotor ' + m.name, brand: { '@type': 'Brand', name: 'Leapmotor' }, model: m.name,
-      image: cfg.siteUrl + '/assets/img/models/' + m.id + '/hero.webp', url: url, description: m.tagline[lang].join(' ')
+      image: cfg.siteUrl + '/assets/img/models/' + m.id + '/og.jpg', url: url, description: m.tagline[lang].join(' ')
     };
     if (minPrice(m) != null) {
-      car.offers = { '@type': 'AggregateOffer', priceCurrency: 'UZS', lowPrice: minPrice(m), highPrice: maxPrice(m), offerCount: prices(m).length, availability: 'https://schema.org/InStoreOnly', url: url };
+      car.offers = { '@type': 'AggregateOffer', priceCurrency: 'UZS', lowPrice: minPrice(m), highPrice: maxPrice(m), offerCount: prices(m).length, availability: 'https://schema.org/InStoreOnly', url: url,
+        seller: cfg.branches.map(function (b) { return { '@id': cfg.siteUrl + '/#' + b.id }; }) };
     }
     return car;
   }
@@ -389,6 +398,7 @@
     if (page.kind === 'model') {
       var m = cfg.models.filter(function (x) { return x.id === page.id; })[0];
       graph.push(carNode(cfg, lang, m));
+      graph = graph.concat(dealerNodes(cfg, lang, contactsUrl));
     }
     if (page.kind !== 'home') {
       var label = page.kind === 'model' ? 'Leapmotor ' + page.id.toUpperCase() : t.navContacts;
@@ -419,7 +429,7 @@
     var v = '?v=' + buildVersion;
     var heroId = page.kind === 'model' ? page.id : cfg.models[0].id;
     var preload = (page.kind === 'home' || page.kind === 'model') ?
-      '<link rel="preload" href="' + rootPath + 'assets/img/models/' + heroId + '/hero.webp" as="image" fetchpriority="high">\n' : '';
+      '<link rel="preload" as="image" href="' + heroPath(rootPath, heroId) + '" imagesrcset="' + heroSrcset(rootPath, heroId) + '" imagesizes="100vw" fetchpriority="high">\n' : '';
     return '<!doctype html>\n' +
       '<!-- ЭТОТ ФАЙЛ СОЗДАН АВТОМАТИЧЕСКИ. Цены: js/config.js, тексты: js/i18n.js, структура: js/render.js. Затем: node tools/build.js -->\n' +
       '<html lang="' + lang + '" data-page="' + pageId(page) + '" data-hash="' + hash(cfg, i18n) + '">\n<head>\n' + gtmTag(cfg) +
@@ -441,7 +451,7 @@
   }
 
   root.SITE_RENDER = {
-    body: body, documentHtml: documentHtml, hash: hash, heroPath: heroPath, photoPath: photoPath,
+    body: body, documentHtml: documentHtml, hash: hash, heroPath: heroPath, heroSrcset: heroSrcset, photoPath: photoPath,
     rootFor: rootFor, linkFn: linkFn, priceText: priceText, minPrice: minPrice, esc: esc
   };
 })(typeof window !== 'undefined' ? window : globalThis);

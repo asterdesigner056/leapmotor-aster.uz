@@ -38,6 +38,7 @@
     /* ---------- ФИЛИАЛЫ ----------
        city: значение поля "city" в заявке. Для Самарканда проверьте
        написание с вашей CRM (samarkand или samarqand).
+       hours: часы работы для поисковиков, например 'Mo-Su 09:00-20:00'. Пустая строка не выводит их.
        phone: впишите номер, например '+998 90 123 45 67', и на сайте
        появится кнопка звонка. Пустая строка скрывает её. */
     branches: [
@@ -45,6 +46,7 @@
         id: 'samarkand',
         city: 'samarkand',
         phone: '',
+        hours: '',
         name: { ru: 'Самарканд', uz: 'Samarqand' },
         address: {
           ru: 'Город Самарканд, массив Чопон Ота, 50A',
@@ -56,6 +58,8 @@
         street: { ru: 'массив Чопон Ота, 50A', uz: 'Choʻpon Ota massivi, 50A' },
         instagram: 'https://www.instagram.com/leapmotor_samarkand_aster/',
         telegram: 'https://t.me/leapmotorsamarkand_Aster',
+        // Координаты точки на карте (из ссылки Google Карт). Нужны поисковикам для местного поиска
+        lat: 39.6742248, lng: 67.0279693,
         googleMaps: 'https://maps.app.goo.gl/nRRkBz8R6tc4XGNL7',
         yandexMaps: 'https://yandex.uz/maps/-/CXrgnD~d'
       },
@@ -63,6 +67,7 @@
         id: 'qarshi',
         city: 'qarshi',
         phone: '',
+        hours: '',
         name: { ru: 'Карши', uz: 'Qarshi' },
         address: {
           ru: 'Кашкадарьинская обл., Каршинский р., МФЙ Богобод, посёлок Тукмагит, дом 326',
@@ -73,6 +78,7 @@
         street: { ru: 'МФЙ Богобод, посёлок Тукмагит, дом 326', uz: 'Bogʻobod MFY, Toʻqmagʻit qoʻrgʻoni, 326-uy' },
         instagram: 'https://www.instagram.com/leapmotor_qarshi_aster/',
         telegram: 'https://t.me/leapmotor_qarshi_aster',
+        lat: 38.902011, lng: 65.79524,
         googleMaps: 'https://maps.app.goo.gl/mjrGtFbTyQn56i8cA',
         yandexMaps: 'https://yandex.uz/maps/-/CXRGJNPM'
       }
